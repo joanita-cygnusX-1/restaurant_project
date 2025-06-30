@@ -1,118 +1,91 @@
-def welcome_message(name):
-    return f"Welcome to {name}!!"
 
-def display_menu(menu):
-    menu_text = ""
-    for category, items in menu.items():
-        menu_text += category + "\n"
-        if items:
-            for i, item in enumerate(items, start=1):
-                menu_text += f"  {i}. {item['name']} - ${item['price']}\n"
-        else:
-            menu_text += "  No items to display\n"
-    return menu_text.strip()
-
-def pick_menu_item(menu):
-    print("Please choose a category:")
-    categories = list(menu.keys())
-    for index, category in enumerate(categories, start=1):
-        print(f"{index}. {category}")
-
-    try:
-        category_choice = int(input("Enter the number of the category: "))
-        if 1 <= category_choice <= len(categories):
-            selected_category = categories[category_choice - 1]
-        else:
-            print("Invalid category number.")
-            return None
-    except ValueError:
-        print("Please enter a valid number.")
-        return None
-
-    items = menu[selected_category]
-    if not items:
-        print("No items to display in this category.")
-        return None
-
-    print(f"\nItems in {selected_category}:")
-    for index, item in enumerate(items, start=1):
-        print(f"{index}. {item['name']} - ${item['price']}")
-
-    try:
-        item_choice = int(input("Enter the number of the item: "))
-        if 1 <= item_choice <= len(items):
-            selected_item = items[item_choice - 1]
-        else:
-            print("Invalid item number.")
-            return None
-    except ValueError:
-        print("Please enter a valid number.")
-        return None
-
-    try:
-        quantity = int(input(f"How many '{selected_item['name']}' would you like? "))
-        if quantity < 1:
-            print("Quantity must be at least 1.")
-            return None
-    except ValueError:
-        print("Please enter a valid number.")
-        return None
-
-    return {
-        "category": selected_category,
-        "name": selected_item["name"],
-        "price": selected_item["price"],
-        "quantity": quantity
+menu = {
+    "Starters": {
+        1: {"name": "Spring Rolls", "price": 5.0},
+        2: {"name": "Garlic Bread", "price": 4.5}
+    },
+    "Meals": {
+        1: {"name": "Grilled Chicken", "price": 10.0},
+        2: {"name": "Veggie Burger", "price": 8.5}
+    },
+    "Beverages": {
+        1: {"name": "Lemonade", "price": 3.0},
+        2: {"name": "Iced Tea", "price": 3.5}
     }
+}
 
-def show_order_summary(order_items):
-    print("\n----- Order Summary -----")
-    total = 0
-    for i, item in enumerate(order_items, start=1):
-        subtotal = item["price"] * item["quantity"]
-        total += subtotal
-        print(f"{i}. {item['quantity']} x {item['name']} (${item['price']} each) = ${subtotal}")
-    print(f"Total: ${total}")
-    print("-------------------------\n")
+order = []
 
-def start(name, menu_data):
-    print(welcome_message(name))
-    print("Explore our Menu\n")
-    print(display_menu(menu_data))
+def display_order():
+    if not order:
+        print("\nYour order is empty.")
+    else:
+        print("\n--- Your Order ---")
+        total = 0
+        for item in order:
+            print(f"- {item['name']} (${item['price']:.2f})")
+            total += item['price']
+        print(f"Total: ${total:.2f}")
+    print("------------------")
 
-    order_items = []
+def get_category_choice():
+    categories = list(menu.keys())
+    invalid_attempts = 0
     while True:
-        result = pick_menu_item(menu_data)
-        if result:
-            order_items.append(result)
-            another = input("Would you like to add another item? (yes/no): ").lower()
-            if another != "yes":
-                break
-        else:
-            print("Item not added. Try again.")
+        print("\nPlease choose a category:")
+        for idx, cat in enumerate(categories, 1):
+            print(f"{idx}. {cat}")
+        print("0. Exit")
 
-    show_order_summary(order_items)
+        choice = input("Enter the number of the category: ")
+
+        if choice == "0":
+            confirm = input("Are you sure you want to exit? (y/n): ").strip().lower()
+            if confirm == "y":
+                display_order()
+                print("Exiting program. Goodbye!")
+                exit()
+            else:
+                continue
+
+        if not choice.isdigit() or int(choice) < 1 or int(choice) > len(categories):
+            print("Please enter a valid number.")
+            invalid_attempts += 1
+            if invalid_attempts >= 2:
+                print("Too many invalid attempts. Showing order and exiting...")
+                display_order()
+                exit()
+            continue
+
+        return categories[int(choice) - 1]
+
+def get_item_choice(category):
+    print(f"\nItems in {category}:")
+    for num, details in menu[category].items():
+        print(f"{num}. {details['name']} - ${details['price']:.2f}")
+    choice = input("Enter item number to add to order (or 0 to cancel): ")
+    
+    if choice == "0":
+        print("Item selection cancelled.")
+        return
+
+    if not choice.isdigit() or int(choice) not in menu[category]:
+        print("Invalid item number.")
+        return
+
+    selected = menu[category][int(choice)]
+    order.append(selected)
+    print(f"{selected['name']} added to your order.")
 
 def main():
-    restaurant_name = "Franchels Restaurant"
-    menu_list = {
-        "Starters": [
-            {"name": "Soup of the Day", "price": 5},
-            {"name": "Bruschetta", "price": 7},
-            {"name": "Garlic Bread", "price": 4}
-        ],
-        "Meals": [
-            {"name": "Grilled Chicken", "price": 12},
-            {"name": "Pasta Carbonara", "price": 10},
-            {"name": "Veggie Burger", "price": 9}
-        ],
-        "Beverages": [
-            {"name": "Coke", "price": 2},
-            {"name": "Orange Juice", "price": 3},
-            {"name": "Water", "price": 1}
-        ]
-    }
-    start(restaurant_name, menu_list)
+    print("🍽️ Welcome to the Restaurant Ordering System!")
+    while True:
+        category = get_category_choice()
+        get_item_choice(category)
+
+# Run the program
+main()
 
 if __name__ == "__main__":
     main()
+  
