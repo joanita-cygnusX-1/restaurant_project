@@ -1,51 +1,19 @@
-# Restaurant Project 🍽️
+# 🍽️ Restaurant CLI Project
 
-A simple terminal-based menu system built in Python to simulate a restaurant interface. It includes:
+![Python](https://img.shields.io/badge/Python-3.8%2B-blue.svg)
+![Pytest](https://img.shields.io/badge/Testing-Pytest-green)
+![GitHub last commit](https://img.shields.io/github/last-commit/joanita-cygnusX-1/restaurant_project)
+![License](https://img.shields.io/badge/license-MIT-lightgrey)
 
-- A welcome message
-- A displayable menu (with sub-items like Starters, Meals, and Beverages)
-- Unit tests using `pytest`
+A simple **terminal-based menu system** built with Python to simulate a restaurant interface.
 
-## 📂 Project Structure
-restaurant_project/
-├── restaurant.py # Main program
-├── test_restaurant.py # Test file for pytest
-└── README.md # Project documentation
+---
 
-## ✅ How to Run
+## 🖼️ Demo Snapshot
 
-1. Make sure Python and `pytest` are installed.
-2. Run the script:
+<img src="https://raw.githubusercontent.com/joanita-cygnusX-1/restaurant_project/main/demo.gif" alt="demo" width="600"/>
 
-```bash
-python3 restaurant.py
+---
 
-3. Run test:  
+## 📁 Project Structure
 
-```bash
-pytest
-
-
-🧪 Skills Demonstrated
-Python basics (functions, lists, dictionaries)
-
-Writing unit tests with pytest
-
-Command-line program flow
-
-Git & GitHub project setup
-
-
-
-🚀 Future Enhancements
-Add user input (choose a menu item)
-
-Simulate placing an order
-
-Track total bill
-
-
-💼 Why This Project?
-This is part of my programming + testing portfolio as I build toward becoming a remote QA Engineer or Junior Developer.
-
-Feel free to check out my GitHub: github.com/joanita-cygnusX-1
